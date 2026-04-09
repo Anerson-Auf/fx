@@ -4,6 +4,7 @@ use color_eyre::{eyre::Result};
 use reqwest::blocking::Client;
 use std::io::{copy};
 use std::fs::{File, create_dir_all};
+use std::path::Path;
 
 const URLS: [(&str, &str); 3] = [
     ("https://github.com/Anerson-Auf/fx/releases/download/q/ToWRR.7z", ""), // game folder
@@ -11,7 +12,15 @@ const URLS: [(&str, &str); 3] = [
     ("https://github.com/Anerson-Auf/fx/releases/download/q/StreamingAssets.7z", "ToW_Data/StreamingAssets") // game folder/StreamingAssets
 ];
 
+
 fn main() -> Result<()> {
+    let paths = ["C:/lua_dump", "C:/lua_dump_all"];
+    for p in paths {
+        let path = Path::new(p);
+        if !path.exists() {
+            create_dir_all(path)?;
+        }
+    }
     let game_path = FileDialog::new().pick_folder().unwrap();
     let client = Client::new();
 
